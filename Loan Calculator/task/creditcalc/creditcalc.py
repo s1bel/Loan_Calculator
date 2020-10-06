@@ -14,11 +14,32 @@ import sys
 # exit(1)
 
 args = sys.argv
-print(args)
+formatted_args = []
 
-if len(args) > 4 and ('--type=annuity' in args or '--type=diff' in args) \
-        and str(args).find('--interest=') != -1:
-    if '--type=diff' in args and str(args).find('--payment=') == -1:
+if len(args) > 4:
+    for i in args:
+        formatted_args += i.split('=')
+else:
+    print('Incorrect parameters')
+    exit(0)
+
+if '--payment' in formatted_args and float(formatted_args[formatted_args.index('--payment') + 1]) < 0:
+    print('Incorrect parameters')
+    exit(0)
+elif '--principal' in formatted_args and float(formatted_args[formatted_args.index('--principal') + 1]) < 0:
+    print('Incorrect parameters')
+    exit(0)
+elif '--periods' in formatted_args and float(formatted_args[formatted_args.index('--periods') + 1]) < 0:
+    print('Incorrect parameters')
+    exit(0)
+elif '--interest' in formatted_args and float(formatted_args[formatted_args.index('--interest') + 1]) < 0:
+    print('Incorrect parameters')
+    exit(0)
+
+if '--type' in formatted_args and ('diff' in formatted_args or 'annuity' in formatted_args) and '--interest' in formatted_args:
+    if 'diff' in formatted_args and not '--payment' in formatted_args:
+        pass
+    elif 'annuity' in formatted_args:
         pass
     else:
         print('Incorrect parameters')
@@ -26,6 +47,8 @@ if len(args) > 4 and ('--type=annuity' in args or '--type=diff' in args) \
 else:
     print('Incorrect parameters')
     exit(0)
+
+exit(0)
 
 print('''What do you want to calculate?
 type "n" - for number of monthly payments,
